@@ -17,14 +17,17 @@ import org.webjars.NotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
+import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
+
 @RestController
-@RequestMapping("${base-url}" + "/users")
+@RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
 
     public static final String ID = "/{id}";
+    public static final String USER_CONTROLLER_PATH = "/users";
 
     public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;

@@ -12,11 +12,9 @@ import org.webjars.NotFoundException;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userRegistrationDto.getFirstName());
         user.setLastName(userRegistrationDto.getLastName());
         user.setEmail(userRegistrationDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        user.setPassword(userRegistrationDto.getPassword());
 
         return userRepository.save(user);
     }
@@ -38,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 userRegistrationDto.getFirstName(),
                 userRegistrationDto.getLastName(),
                 userRegistrationDto.getEmail(),
-                passwordEncoder.encode(userRegistrationDto.getPassword())
+                userRegistrationDto.getPassword()
         ));
     }
 }
