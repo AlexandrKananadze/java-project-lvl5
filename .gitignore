@@ -9,6 +9,7 @@ frontend/node_modules
 /node
 *.mv.db
 *.trace.db
+.DS_Store
 
 ### STS ###
 .apt_generated

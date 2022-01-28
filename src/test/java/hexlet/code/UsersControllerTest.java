@@ -126,4 +126,35 @@ public class UsersControllerTest {
         assertThat(requestBody).contains("Lastname must be at least 1 symbol");
         assertThat(requestBody).contains("Password must be at least 3 symbols");
     }
+
+    @Test
+    void testChangeOtherUser() throws Exception {
+        User userToChange = userRepository.findAll().get(0);
+        testUtils.regDefaultUser();
+        User dbUser = userRepository.findAll().get(1);
+
+        MockHttpServletResponse req = testUtils.perform(
+                put(BASE_URL + USER_CONTROLLER_PATH + ID, userToChange.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userChangeData),
+                dbUser.getEmail()
+        ).andReturn().getResponse();
+
+        assertThat(req.getStatus()).isEqualTo(401);
+    }
+
+    @Test
+    void testDeleteOtherUser() throws Exception {
+        User dbUser = userRepository.findAll().get(0);
+        testUtils.regDefaultUser();
+        User userToDelete = userRepository.findAll().get(1);
+
+        MockHttpServletResponse req = testUtils.perform(
+                delete(BASE_URL + USER_CONTROLLER_PATH + ID, userToDelete.getId()),
+                dbUser.getEmail()
+        ).andReturn().getResponse();
+
+        assertThat(req.getStatus()).isEqualTo(401);
+        assertThat(userRepository.findById(userToDelete.getId())).isPresent();
+    }
 }
