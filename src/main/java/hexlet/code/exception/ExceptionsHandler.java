@@ -2,6 +2,7 @@ package hexlet.code.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,12 @@ public class ExceptionsHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String accessDeniedExceptionHandler(AccessDeniedException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String badCredentialsExceptionHandler(BadCredentialsException e) {
         return e.getMessage();
     }
 
