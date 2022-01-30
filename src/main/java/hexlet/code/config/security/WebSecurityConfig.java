@@ -1,6 +1,6 @@
 package hexlet.code.config.security;
 
-import hexlet.code.controller.AuthController;
+import hexlet.code.controller.UserController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,8 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import static hexlet.code.controller.AuthController.LOGIN_CONTROLLER_PATH;
+import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 
 @Configuration
@@ -37,8 +39,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                           @Lazy final TokenAuthenticationProvider tokenAuthenticationProvider) {
         this.authenticationProvider = tokenAuthenticationProvider;
         this.publicUrls = new OrRequestMatcher(
-                new AntPathRequestMatcher(baseUrl + AuthController.LOGIN_CONTROLLER_PATH,
+                new AntPathRequestMatcher(baseUrl + LOGIN_CONTROLLER_PATH,
                         HttpMethod.POST.toString()),
+                new AntPathRequestMatcher(baseUrl + STATUS_CONTROLLER_PATH,
+                        HttpMethod.GET.toString()),
+                new AntPathRequestMatcher(baseUrl + STATUS_CONTROLLER_PATH
+                        + UserController.ID, HttpMethod.GET.toString()),
+                new AntPathRequestMatcher(baseUrl + STATUS_CONTROLLER_PATH
+                        + UserController.ID, HttpMethod.GET.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH,
                         HttpMethod.POST.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH,

@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
+import hexlet.code.dto.StatusDto;
 import hexlet.code.dto.UserRegistrationDto;
+import hexlet.code.model.Status;
 import hexlet.code.model.User;
+import hexlet.code.repository.StatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.impl.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -39,13 +43,18 @@ public class TestUtils {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private StatusRepository statusRepository;
+
     public static final String BASE_URL = "/api";
     public static final String TEMPLATES_PATH = "src/test/resources/templates/";
 
-    private final UserRegistrationDto regDto = new UserRegistrationDto("test@mail.ru",
+    private final UserRegistrationDto userRegDto = new UserRegistrationDto("test@mail.ru",
             "firstname",
             "lastName",
             "password");
+
+    private final StatusDto statusRegDto = new StatusDto("New");
 
     public User regDefaultUser() throws Exception {
         User user = userRepository.findAll().get(0);
@@ -53,11 +62,24 @@ public class TestUtils {
         MockHttpServletResponse req = perform(
                 post(BASE_URL + USER_CONTROLLER_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(regDto)),
+                        .content(toJson(userRegDto)),
                 user.getEmail()
         ).andReturn().getResponse();
 
         return userRepository.findAll().get(1);
+    }
+
+    public Status regDefaultStatus() throws Exception {
+        User user = userRepository.findAll().get(0);
+
+        MockHttpServletResponse req = perform(
+                post(BASE_URL + STATUS_CONTROLLER_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(statusRegDto)),
+                user.getEmail()
+        ).andReturn().getResponse();
+
+        return statusRepository.findAll().get(0);
     }
 
     public ResultActions perform(MockHttpServletRequestBuilder req) throws Exception {

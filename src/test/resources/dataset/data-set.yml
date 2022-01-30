@@ -5,3 +5,8 @@ users:
     email: mail@yahoo.com
     password: $2a$12$lP1HdpYa4yT./wnilPzf0OoxaVHJunEkkxw4SwkYL5obPjq.fG8Xy
     created_at: 2021-01-26T12:45:17.173Z
+
+status:
+  - id: 20
+    name: To Do
+    created_at: 2022-01-30T12:40:12.143Z
