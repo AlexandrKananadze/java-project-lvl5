@@ -4,6 +4,7 @@ import hexlet.code.dto.UserRegistrationDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 public class UserController {
@@ -32,11 +34,6 @@ public class UserController {
     private static final String ONLY_OWNER = """
                 @userRepository.findById(#id).get().getEmail() == authentication.getName()
             """;
-
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
     @GetMapping(ID)
     public User getUserById(@PathVariable("id") Long id) {

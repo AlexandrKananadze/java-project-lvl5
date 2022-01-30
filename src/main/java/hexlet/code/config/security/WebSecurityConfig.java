@@ -22,6 +22,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static hexlet.code.controller.AuthController.LOGIN_CONTROLLER_PATH;
 import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
+import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 
 @Configuration
@@ -47,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         + UserController.ID, HttpMethod.GET.toString()),
                 new AntPathRequestMatcher(baseUrl + STATUS_CONTROLLER_PATH
                         + UserController.ID, HttpMethod.GET.toString()),
+                new AntPathRequestMatcher(baseUrl + TASK_CONTROLLER_PATH, HttpMethod.GET.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH,
                         HttpMethod.POST.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH,

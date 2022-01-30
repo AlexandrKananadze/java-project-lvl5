@@ -4,6 +4,7 @@ import hexlet.code.dto.StatusDto;
 import hexlet.code.model.Status;
 import hexlet.code.repository.StatusRepository;
 import hexlet.code.service.StatusService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("${base-url}" + STATUS_CONTROLLER_PATH)
 public class StatusController {
@@ -28,11 +30,6 @@ public class StatusController {
 
     private final StatusRepository statusRepository;
     private final StatusService statusService;
-
-    public StatusController(StatusRepository statusRepository, StatusService statusService) {
-        this.statusRepository = statusRepository;
-        this.statusService = statusService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

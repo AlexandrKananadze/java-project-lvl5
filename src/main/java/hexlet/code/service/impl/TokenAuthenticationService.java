@@ -4,6 +4,7 @@ import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.TokenService;
 import hexlet.code.service.UserAuthenticationService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class TokenAuthenticationService implements UserAuthenticationService {
 
     private final TokenService tokenService;
@@ -19,14 +21,6 @@ public class TokenAuthenticationService implements UserAuthenticationService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-
-    public TokenAuthenticationService(TokenService tokenService,
-                                      UserRepository userRepository,
-                                      PasswordEncoder passwordEncoder) {
-        this.tokenService = tokenService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public String login(String username, String password) {

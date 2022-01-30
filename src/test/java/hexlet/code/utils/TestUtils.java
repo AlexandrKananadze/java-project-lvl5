@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import hexlet.code.dto.StatusDto;
+import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.UserRegistrationDto;
 import hexlet.code.model.Status;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.StatusRepository;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.impl.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
 import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
+import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -44,6 +47,9 @@ public class TestUtils {
     private UserRepository userRepository;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private StatusRepository statusRepository;
 
     public static final String BASE_URL = "/api";
@@ -55,6 +61,26 @@ public class TestUtils {
             "password");
 
     private final StatusDto statusRegDto = new StatusDto("New");
+
+    private final TaskDto taskRegDto = new TaskDto(
+            "TaskName",
+            "TaskDescription",
+            55L,
+            20L
+    );
+
+    public Task regDefaultTask() throws Exception {
+        User user = userRepository.findAll().get(0);
+
+        MockHttpServletResponse req = perform(
+                post(BASE_URL + TASK_CONTROLLER_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(taskRegDto)),
+                user.getEmail()
+        ).andReturn().getResponse();
+
+        return taskRepository.findAll().get(0);
+    }
 
     public User regDefaultUser() throws Exception {
         User user = userRepository.findAll().get(0);
