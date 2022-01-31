@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -44,6 +45,7 @@ public class Task {
     private User executor;
     @ManyToMany
     @Nullable
+    @JoinTable(name = "task_labels")
     private List<Label> labels;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

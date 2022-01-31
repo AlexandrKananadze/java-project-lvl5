@@ -46,7 +46,7 @@
     <changeSet author="Alex (generated)" id="1643581394521-4">
         <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="task" constraintName="FKnu4tbtolc8avjgstax6sk0woe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="noname (generated)" id="1643631696749-1">
+    <changeSet author="Alex (generated)" id="1643631696749-1">
         <createTable tableName="label">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="labelPK"/>
@@ -55,7 +55,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="noname (generated)" id="1643631696749-2">
+    <changeSet author="Alex (generated)" id="1643631696749-2">
         <createTable tableName="task_label">
             <column name="task_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -65,10 +65,10 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="noname (generated)" id="1643631696749-3">
+    <changeSet author="Alex (generated)" id="1643631696749-3">
         <addForeignKeyConstraint baseColumnNames="labels_id" baseTableName="task_label" constraintName="FK4mg0uemuv9ewcbttc0atbt5hs" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="label" validate="true"/>
     </changeSet>
-    <changeSet author="noname (generated)" id="1643631696749-4">
+    <changeSet author="Alex (generated)" id="1643631696749-4">
         <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_label" constraintName="FKbp361h72empe2dgbbv3fc6n4n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
     </changeSet>
 </databaseChangeLog>
