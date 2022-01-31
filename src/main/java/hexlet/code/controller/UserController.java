@@ -4,6 +4,9 @@ import hexlet.code.dto.UserRegistrationDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,28 +38,56 @@ public class UserController {
                 @userRepository.findById(#id).get().getEmail() == authentication.getName()
             """;
 
+
+    @Operation(summary = "Get user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get user information"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @GetMapping(ID)
     public User getUserById(@PathVariable("id") Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
+    @Operation(summary = "Get all users")
+    @ApiResponse(responseCode = "200", description = "Get list of all users")
     @GetMapping
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
+
+    @Operation(summary = "Create user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created"),
+            @ApiResponse(responseCode = "422", description = "User invalid/Invalid input")
+    })
     @PostMapping
     public User newUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
         return userService.newUser(userRegistrationDto);
     }
 
+    @Operation(summary = "Update user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "422", description = "Invalid input")
+    })
     @PutMapping(ID)
     @PreAuthorize(ONLY_OWNER)
     public User updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserRegistrationDto userRegistrationDto) {
         return userService.updateUser(id, userRegistrationDto);
     }
 
+    @Operation(summary = "Delete user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER)
     public void deleteUser(@PathVariable("id") Long id) {

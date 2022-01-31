@@ -5,6 +5,9 @@ import hexlet.code.dto.TaskDto;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
@@ -37,28 +40,55 @@ public class TaskController {
     private TaskService taskService;
     private TaskRepository taskRepository;
 
+    @Operation(summary = "Get task by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @GetMapping(ID)
     public Task getTaskById(@PathVariable("id") Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
     }
 
+    @Operation(summary = "Create task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success"),
+            @ApiResponse(responseCode = "422", description = "Invalid input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@Valid @RequestBody TaskDto taskDto) {
         return taskService.createTask(taskDto);
     }
 
+    @Operation(summary = "Change task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "422", description = "Invalid input")
+    })
     @PutMapping(ID)
     public Task changeTask(@PathVariable("id") Long id, @Valid @RequestBody TaskDto taskDto) {
         return taskService.updateTask(id, taskDto);
     }
 
+    @Operation(summary = "Get all tasks/Filter")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success")
+    })
     @GetMapping
     public Iterable<Task> getAll(@QuerydslPredicate Predicate predicate) {
         return taskRepository.findAll(predicate);
     }
 
+    @Operation(summary = "Delete task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public void deleteTask(@PathVariable("id") Long id) {

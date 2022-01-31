@@ -4,6 +4,9 @@ import hexlet.code.dto.LabelDto;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,28 +35,55 @@ public class LabelController {
     private LabelRepository labelRepository;
     private LabelService labelService;
 
+    @Operation(summary = "Get all labels")
+    @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
     public List<Label> getAll() {
         return labelRepository.findAll();
     }
 
+    @Operation(summary = "Get label by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @GetMapping(ID)
     public Label getById(@PathVariable("id") Long id) {
         return labelRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Label not found"));
     }
 
+    @Operation(summary = "Delete label")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "422", description = "Invalid input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @DeleteMapping(ID)
     public void deleteLabel(@PathVariable("id") Long id) {
         labelRepository.deleteById(id);
     }
 
+    @Operation(summary = "New label")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success"),
+            @ApiResponse(responseCode = "422", description = "Invalid input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Label newLabel(@Valid @RequestBody LabelDto labelDto) {
         return labelService.newLabel(labelDto);
     }
 
+    @Operation(summary = "Change label")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "422", description = "Invalid input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @PutMapping(ID)
     public Label changeLabel(@PathVariable("id") Long id, @Valid @RequestBody LabelDto labelDto) {
         return labelService.changeLabel(id, labelDto);
