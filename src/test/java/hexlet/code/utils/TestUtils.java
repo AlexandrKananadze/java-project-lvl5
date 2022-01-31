@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
+import hexlet.code.dto.LabelDto;
 import hexlet.code.dto.StatusDto;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.UserRegistrationDto;
+import hexlet.code.model.Label;
 import hexlet.code.model.Status;
 import hexlet.code.model.Task;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.StatusRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
@@ -27,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.controller.StatusController.STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
@@ -52,6 +56,9 @@ public class TestUtils {
     @Autowired
     private StatusRepository statusRepository;
 
+    @Autowired
+    private LabelRepository labelRepository;
+
     public static final String BASE_URL = "/api";
     public static final String TEMPLATES_PATH = "src/test/resources/templates/";
 
@@ -68,6 +75,21 @@ public class TestUtils {
             55L,
             20L
     );
+
+    private final LabelDto labelRegDto = new LabelDto("NewLabel");
+
+    public Label regDefaultLabel() throws Exception {
+        User user = userRepository.findAll().get(0);
+
+        MockHttpServletResponse req = perform(
+                post(BASE_URL + LABEL_CONTROLLER_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(labelRegDto)),
+                user.getEmail()
+        ).andReturn().getResponse();
+
+        return labelRepository.findAll().get(0);
+    }
 
     public Task regDefaultTask() throws Exception {
         User user = userRepository.findAll().get(0);
