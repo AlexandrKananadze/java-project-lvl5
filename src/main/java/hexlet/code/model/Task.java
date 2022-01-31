@@ -11,9 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -24,29 +26,39 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "task")
 @NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     @Size(min = 1, message = "Name must be at least 1 symbol")
     private String name;
+
     @Nullable
     @Column(name = "description")
     private String description;
+
     @NotNull
     @ManyToOne
     private Status taskStatus;
+
     @ManyToOne
+    @JoinColumn(name = "authorId")
     private User author;
+
     @ManyToOne
     @Nullable
+    @JoinColumn(name = "executorId")
     private User executor;
+
     @ManyToMany
     @Nullable
     @JoinTable(name = "task_labels")
     private List<Label> labels;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createdAt")

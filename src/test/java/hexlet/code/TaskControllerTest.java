@@ -55,9 +55,9 @@ public class TaskControllerTest {
 
     @Test
     void testNewTask() throws Exception {
-        assertThat(taskRepository.count()).isEqualTo(0);
-        testUtils.regDefaultTask();
         assertThat(taskRepository.count()).isEqualTo(1);
+        testUtils.regDefaultTask();
+        assertThat(taskRepository.count()).isEqualTo(2);
     }
 
     @Test
@@ -71,9 +71,9 @@ public class TaskControllerTest {
 
     @Test
     void testDeleteTask() throws Exception {
-        User user = userRepository.findById(55L).get();
-        Task task = testUtils.regDefaultTask();
-        assertThat(taskRepository.count()).isEqualTo(1);
+        User user = userRepository.findById(15L).get();
+        Task task = taskRepository.findById(1L).get();
+        assertThat(taskRepository.count()).isEqualTo(1L);
 
         MockHttpServletResponse req = testUtils.perform(
                 delete(BASE_URL + TASK_CONTROLLER_PATH + ID, task.getId()),
@@ -112,5 +112,20 @@ public class TaskControllerTest {
 
         assertThat(req.getStatus()).isEqualTo(200);
         assertThat(req.getContentAsString()).contains("NewName");
+    }
+
+    @Test
+    void testFilter() throws Exception {
+        User user = userRepository.findAll().get(0);
+        testUtils.regDefaultTask();
+
+        MockHttpServletResponse req = testUtils.perform(
+                get(BASE_URL + TASK_CONTROLLER_PATH + "?executorId=15"),
+                user.getEmail()
+        ).andReturn().getResponse();
+
+        assertThat(req.getStatus()).isEqualTo(200);
+        assertThat(req.getContentAsString()).contains("VeryImportantTask");
+        assertThat(req.getContentAsString()).doesNotContain("TaskName");
     }
 }

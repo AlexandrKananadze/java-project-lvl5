@@ -52,9 +52,9 @@ public class UsersControllerTest {
 
     @Test
     void testUserCreate() throws Exception {
-        assertThat(userRepository.count()).isEqualTo(1);
-        testUtils.regDefaultUser();
         assertThat(userRepository.count()).isEqualTo(2);
+        testUtils.regDefaultUser();
+        assertThat(userRepository.count()).isEqualTo(3);
     }
 
     @Test
@@ -97,9 +97,9 @@ public class UsersControllerTest {
 
     @Test
     void testDeleteUser() throws Exception {
-        User userToDelete = userRepository.findAll().get(0);
+        User userToDelete = testUtils.regDefaultUser();
 
-        assertThat(userRepository.count()).isEqualTo(1);
+        assertThat(userRepository.count()).isEqualTo(3);
 
         MockHttpServletResponse req = testUtils.perform(
                 delete(BASE_URL + USER_CONTROLLER_PATH + ID, userToDelete.getId()),
@@ -107,7 +107,7 @@ public class UsersControllerTest {
         ).andReturn().getResponse();
 
         assertThat(req.getStatus()).isEqualTo(200);
-        assertThat(userRepository.count()).isEqualTo(0);
+        assertThat(userRepository.count()).isEqualTo(2);
     }
 
     @Test

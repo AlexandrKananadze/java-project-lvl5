@@ -4,9 +4,25 @@ users:
     last_name: LastName
     email: mail@yahoo.com
     password: $2a$12$lP1HdpYa4yT./wnilPzf0OoxaVHJunEkkxw4SwkYL5obPjq.fG8Xy
-    created_at: 2021-01-26T12:45:17.173Z
+    created_at: 2022-01-31T12:45:17.173Z
+
+  - id: 15
+    first_name: TestFirstName
+    last_name: TestLastName
+    email: myemail@mail.com
+    password: $2a$12$lP1HdpYa4yT./wnilPzf0OoxaVHJunEkkxw4SwkYL5obPjq.fG8Xy
+    created_at: 2022-01-31T12:45:17.173Z
 
 status:
   - id: 20
     name: To Do
     created_at: 2022-01-30T12:40:12.143Z
+
+task:
+  - id: 1
+    created_at: 2022-01-30T12:40:12.143Z
+    description: null
+    name: VeryImportantTask
+    author_id: 15
+    executor_id: 15
+    task_status_id: 20
