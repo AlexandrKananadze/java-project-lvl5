@@ -30,7 +30,7 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public String accessDeniedExceptionHandler(AccessDeniedException e) {
         return e.getMessage();
     }

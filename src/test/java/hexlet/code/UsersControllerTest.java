@@ -140,7 +140,7 @@ public class UsersControllerTest {
                 dbUser.getEmail()
         ).andReturn().getResponse();
 
-        assertThat(req.getStatus()).isEqualTo(401);
+        assertThat(req.getStatus()).isEqualTo(403);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class UsersControllerTest {
                 dbUser.getEmail()
         ).andReturn().getResponse();
 
-        assertThat(req.getStatus()).isEqualTo(401);
+        assertThat(req.getStatus()).isEqualTo(403);
         assertThat(userRepository.findById(userToDelete.getId())).isPresent();
     }
 }

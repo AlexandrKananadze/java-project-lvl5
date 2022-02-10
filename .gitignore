@@ -10,6 +10,7 @@ frontend/node_modules
 *.mv.db
 *.trace.db
 .DS_Store
+derby.log
 
 ### STS ###
 .apt_generated
